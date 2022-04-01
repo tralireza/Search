@@ -1,6 +1,11 @@
 package Search
 
-import "log"
+import (
+	"container/heap"
+	"container/list"
+	"log"
+	"testing"
+)
 
 func init() {
 	log.Print("> Search: DFS/BFS")
@@ -8,7 +13,7 @@ func init() {
 
 type e2812 struct {
 	priority int
-	v        any
+	cord     []int
 }
 type pq2812 []e2812
 
@@ -52,27 +57,26 @@ func Test2812(t *testing.T) {
 			}
 		}
 
-		type E = e2812
+		type e = e2812
 		pq := pq2812{}
 
-		heap.Push(&pq, E{grid[0][0], []int{0, 0}})
+		heap.Push(&pq, e{grid[0][0], []int{0, 0}})
 		grid[0][0] = -1
 
-		Dirs := []int{0, 1, 0, -1, 0}
-		factor := 0
+		dirs := []int{0, 1, 0, -1, 0}
 		for pq.Len() > 0 {
-			e := heap.Pop(&pq).(E)
-			factor = e.priority
+			log.Print("PQ -> ", pq)
+			entry := heap.Pop(&pq).(e)
 
-			cord := e.v.([]int)
+			factor, cord := entry.priority, entry.cord
 			if cord[0] == Rows-1 && cord[1] == Cols-1 {
 				return factor
 			}
 
-			for i := range Dirs[:4] {
-				r, c := cord[0]+Dirs[i], cord[1]+Dirs[i+1]
+			for i := range dirs[:4] {
+				r, c := cord[0]+dirs[i], cord[1]+dirs[i+1]
 				if r >= 0 && c >= 0 && Rows > r && Cols > c && grid[r][c] != -1 {
-					heap.Push(&pq, E{min(factor, grid[r][c]), []int{r, c}})
+					heap.Push(&pq, e{min(factor, grid[r][c]), []int{r, c}})
 					grid[r][c] = -1
 				}
 			}
