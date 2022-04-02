@@ -103,6 +103,8 @@ func getMaximumGold(grid [][]int) int {
 			G.PushBack(grid[r][c])
 
 			for Q.Len() > 0 {
+				log.Print(r, c, " -> ", Q.Len())
+
 				cord := Q.Remove(Q.Front()).([]int)
 				Vis := V.Remove(V.Front()).(map[[2]int]bool)
 				g := G.Remove(G.Front()).(int)
