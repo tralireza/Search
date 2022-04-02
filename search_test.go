@@ -91,3 +91,9 @@ func Test2812(t *testing.T) {
 		log.Print("2 ?= ", f([][]int{{0, 0, 0, 1}, {0, 0, 0, 0}, {0, 0, 0, 0}, {1, 0, 0, 0}}))
 	}
 }
+
+// 1219m Path with Maximum Gold
+func Test1219(t *testing.T) {
+	log.Print("24 ?= ", getMaximumGold([][]int{{0, 6, 0}, {5, 8, 7}, {0, 9, 0}}))
+	log.Print("28 ?= ", getMaximumGold([][]int{{1, 0, 7}, {2, 0, 6}, {3, 4, 5}, {0, 3, 0}, {9, 0, 20}}))
+}

@@ -83,3 +83,47 @@ func maximumSafenessFactor(grid [][]int) int {
 	}
 	return factor
 }
+
+// 1219m Path with Maximum Gold
+func getMaximumGold(grid [][]int) int {
+	Rows, Cols := len(grid), len(grid[0])
+
+	dirs := []int{0, 1, 0, -1, 0}
+	gold := 0
+	for r := 0; r < Rows; r++ {
+		for c := 0; c < Cols; c++ {
+			if grid[r][c] == 0 {
+				continue
+			}
+
+			// need BackTracking
+			Q, V, G := list.New(), list.New(), list.New()
+			Q.PushBack([]int{r, c})
+			V.PushBack(map[[2]int]bool{})
+			G.PushBack(grid[r][c])
+
+			for Q.Len() > 0 {
+				cord := Q.Remove(Q.Front()).([]int)
+				Vis := V.Remove(V.Front()).(map[[2]int]bool)
+				g := G.Remove(G.Front()).(int)
+
+				Vis[[2]int{cord[0], cord[1]}] = true
+				gold = max(g, gold)
+
+				for i := range dirs[:4] {
+					x, y := cord[0]+dirs[i], cord[1]+dirs[i+1]
+					if x >= 0 && y >= 0 && Rows > x && Cols > y && !Vis[[2]int{x, y}] && grid[x][y] > 0 {
+						Q.PushBack([]int{x, y})
+						nVis := map[[2]int]bool{}
+						for k, v := range Vis {
+							nVis[k] = v
+						}
+						V.PushBack(nVis)
+						G.PushBack(g + grid[x][y])
+					}
+				}
+			}
+		}
+	}
+	return gold
+}
